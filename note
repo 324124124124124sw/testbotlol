@@ -1,0 +1,203 @@
+
+"""@client.command()
+@commands.cooldown(1, 60, commands.BucketType.user)
+async def vote(ctx, *, user : discord.Member):
+    ratvote = user
+    f = open("ratlist.txt", "a")
+
+    if ctx.message.channel.id == 783483960889966615:
+        f.write(str(ratvote) + "\n")
+        f.close()
+        r = open("ratlist.txt", "r")
+        ratlist = r.readlines()
+        r.close()
+
+        test31 = ratlist.count(f"{user}\n")
+
+        await ctx.send(f"Your vote for {user} has been added to the ratlist. Ratvotes: {test31}")
+    if not ctx.message.channel.id == 783483960889966615:
+        await ctx.send(f"Stop trying to cheat. I see you {ctx.message.author.name}")
+
+
+@client.command()
+async def ratlist(ctx):
+    r = open("ratlist.txt", "r")
+    ratlist = r.readlines()
+
+    counter = Counter(ratlist)
+    print(counter)
+
+    embed = discord.Embed(title="Top rats", color=0xc32222)
+    for key, value in counter.items():
+        embed.add_field(name=key, value=value, inline=True)
+    await ctx.send(embed=embed)"""
+
+
+
+#printmsglist with confirmation
+@client.command()
+async def printmsglist(ctx):
+    a_file = open("spammer.txt")
+    lines = a_file.readlines()
+    testcounter = 1
+    for line in lines:
+        testcounter += 1
+
+    await ctx.send(f"This command will send {testcounter} messages. To proceed type \"yes\"?", delete_after=10)
+
+    @client.event
+    async def on_message(message):
+        a_file = open("spammer.txt")
+        lines = a_file.readlines()
+        counter = 1
+        if message.content.lower() == 'yes':
+
+            for line in lines:
+                await ctx.author.send(str(counter) + " : " + str(line))
+                counter += 1
+        else:
+            return
+
+    print()
+
+
+
+
+#write text on img (works, but not useful to add 10 different texts)
+@client.command()
+async def pokemon(ctx, *,  arg):
+        my_image = Image.open("pokemoncard.png")
+
+        asset = avamember.avatar_url_as(size=128)
+
+        data = BytesIO(await asset.read())
+        pfp = Image.open(data)
+
+        pfp = pfp.resize((345, 225))
+        my_image.paste(pfp, (38, 66))
+
+        my_image.save("profile.png")
+
+        await ctx.send(file=discord.File("profile.png"))
+
+
+
+#wanted poster
+@client.command()
+async def test(ctx, user: discord.Member = None):
+
+        my_image = Image.open("wanted.jpg")
+
+        asset = ctx.author.avatar_url_as(size=128)
+
+        data = BytesIO(await asset.read())
+        pfp = Image.open(data)
+
+        pfp = pfp.resize((570, 650))
+        my_image.paste(pfp, (309, 433))
+
+        my_image.save("profile.png")
+
+        await ctx.send(file=discord.File("profile.png"))
+
+
+"""@client.event
+async def on_message(message: str):
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
+    f = open("text_file.txt", "a")
+    f.write(f"Time: {st} | messages: \"{message}\" | author: {message.author}\n")
+    f.close()
+
+    # ---hello---
+    if message.content.startswith('hello'):
+        channel = message.channel
+        username = message.author.display_name
+        await channel.send(f'Hello {username}!')"""
+
+
+
+"""
+@client.command()  # repeat after me
+async def repeat(ctx, arg):
+    await ctx.send(arg)
+
+@client.command()
+async def message_count(ctx, channel: discord.TextChannel=None):
+    channel = channel or ctx.channel
+    count = 0
+    async for _ in channel.history(limit=None):
+        count += 1
+    await ctx.send("There were {} messages in {}".format(count, channel.mention))
+
+
+@client.command()
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+    print(f"{member} has been kicked")
+
+
+@client.command()
+async def ban(ctx, member: discord.Member, *, reason=None):
+    await member.ban(reason=reason)
+
+
+@client.command()  # clear x messages
+async def clear(ctx, amount=10):
+    await ctx.channel.purge(limit=500)
+    await ctx.send(f"{amount} messages were deleted")
+
+
+@client.command()  # ping pong
+async def ping(ctx):
+    await ctx.send(f"Pong...{round(client.latency * 1000)} ms")
+
+
+@client.command(aliases=["ball", "8ball", "balls"])  # 8ball
+async def _8ball(ctx, *, question):
+    responses = [
+        "It is certain.",
+        "It is decidedly so.",
+        "Without a doubt.",
+        "Yes - definitely.",
+        "You may rely on it.",
+        "As I see it, yes.",
+        "Most likely.",
+        "Outlook good.",
+        "Yes.",
+        "Signs point to yes.",
+        "Reply hazy, try again.",
+        "Ask again later.",
+        "Better not tell you now.",
+        "Cannot predict now.",
+        "Concentrate and ask again.",
+        "Don't count on it.",
+        "My reply is no.",
+        "My sources say no.",
+        "Outlook not so good.",
+        "Very doubtful."]
+    await ctx.send(f"Question: {question} \nAnswer: {r.choice(responses)}")
+
+
+#messages between 2 timestamps
+counter = 0
+# Make sure `limit` is set to None otherwise not all messages will be fetched.
+@client.command(aliases=['24hr', '24',"today"])
+async def _24hr(ctx, channel: discord.TextChannel=None):
+    channel = channel or ctx.channel
+    count = 0
+    async for _ in channel.history(limit=None, after=yesterday1, before=now):
+        count += 1
+    await ctx.send("There were {} messages in {} past 24 hours".format(count, channel.mention))
+
+
+# user leave and join
+@client.event
+async def on_member_join(member):
+    await member.send(f"Welcome {member} to the server")
+
+
+@client.event
+async def on_member_remove(member):
+    print(f"{member} has left a server.")
+"""
